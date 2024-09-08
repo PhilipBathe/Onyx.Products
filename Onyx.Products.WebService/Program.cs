@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using Onyx.Products.WebService;
 using Onyx.Products.WebService.Core;
 using Onyx.Products.WebService.Core.Database;
 using Onyx.Products.WebService.Core.Events;
 using Onyx.Products.WebService.Database;
 using Onyx.Products.WebService.Events;
 using Serilog;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +34,17 @@ builder.Services.AddTransient<IProductData, ProductData>();
 //Events
 builder.Services.AddTransient<IProductEvents, ProductEvents>();
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
+    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+});
+
 
 var app = builder.Build();
 
@@ -43,6 +59,7 @@ app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
