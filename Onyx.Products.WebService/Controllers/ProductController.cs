@@ -33,7 +33,8 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Product>> CreateAsync([FromBody] NewProductRequest newProductRequest)
     {
-        //TODO: add created by
+        newProductRequest.CreatedBy = HttpContext.User.Identity?.Name ?? "Anon";
+
         var result = await _productStore.CreateAsync(newProductRequest);
 
         if(result.IsSuccess)
