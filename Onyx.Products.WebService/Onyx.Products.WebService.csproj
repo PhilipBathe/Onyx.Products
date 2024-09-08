@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Onyx.Products.WebService.Core\Onyx.Products.WebService.Core.csproj" />
+    <ProjectReference Include="..\Onyx.Products.WebService.Database\Onyx.Products.WebService.Database.csproj" />
+    <ProjectReference Include="..\Onyx.Products.WebService.Events\Onyx.Products.WebService.Events.csproj" />
+  </ItemGroup>
+
+</Project>
